@@ -3,7 +3,7 @@ Pyvista with monekypatched vtkjs backend.
 
 `pip install pyvista-vtkjs`
 
-[Demo](https://tom-dudley.github.io/jupyterlite/lab/index.html?path=pyvista-vtkjs-demo%2Fpyvista-vtkjs-demo.ipynb)
+[Demo](https://tom-dudley.github.io/pyvista-vtkjs/lab/index.html?path=demo.ipynb)
 
 # About
 [PyVista](https://pyvista.org/) is a popular visualisation package for Python which leverages [VTK](https://vtk.org/). Since VTK is a C++ library, with no native WASM build, `PyVista` requires a server in order to run.
