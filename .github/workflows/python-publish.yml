@@ -23,6 +23,11 @@ jobs:
       #     VERSION="${{ steps.get_version.outputs.version }}"
       #     sed -i "s/version='0.0.0'/version='${VERSION}'/" setup.py
       #     echo "Updated version to ${VERSION}"
+      - name: Update version in pyproject.toml
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/}"  # Get the version from the tag (e.g., v0.1.0)
+          sed -i "s/^version = \".*\"/version = \"$VERSION\"/" pyproject.toml
+          echo "Updated version in pyproject.toml to $VERSION"
       - name: Build wheel
         run: |
           python -m build --wheel
