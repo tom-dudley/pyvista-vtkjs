@@ -1,2 +1,11 @@
-include pyvista_vtkjs/install.py
-
+# include pyvista_vtkjs/install.py
+# The following is copied from pyvista
+# Include doc
+# include LICENSE
+recursive-exclude pyvista_vtkjs/pyvista/doc *.rst
+recursive-exclude pyvista_vtkjs/pyvista/doc *.py
+recursive-exclude pyvista_vtkjs/pyvista/tests *.*
+prune tests
+# Include type hinting files
+global-include *.pyi
+global-include *.typed

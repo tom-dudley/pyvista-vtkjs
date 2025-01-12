@@ -11,7 +11,10 @@ dependencies = [
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = [
-    "pyvista_vtkjs"
-]
+[tool.setuptool]
+packages = ['pyvista_vtkjs', 'pyvista_vtkjs.*']
+
+[tool.setuptools.packages.find]
+# include = ['pyvista_vtkjs']
+# include = ['pyvista_vtkjs']
+exclude = ['pyvista_vtkjs.pyvista.tests', 'pyvista_vtkjs.pyvista.tests.*']
