@@ -1,0 +1,3 @@
+[submodule "pyvista_vtkjs/pyvista"]
+	path = pyvista_vtkjs/pyvista
+	url = https://github.com/pyvista/pyvista.git
