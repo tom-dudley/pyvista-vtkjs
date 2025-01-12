@@ -5,6 +5,8 @@ description = "An experiment of monkeypatching vtk.js into pyvista"
 authors = [{name = "Tom Dudley"}]
 dependencies = [
     "numpy",
+    "matplotlib",
+    "scooby",
     "webcolors",
 ]
 

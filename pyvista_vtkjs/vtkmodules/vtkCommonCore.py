@@ -1,8 +1,8 @@
-VTK_ARIAL = 1
+VTK_ARIAL = 0
 VTK_COURIER = 1
-VTK_FONT_FILE = 1
-VTK_TIMES = 1
-VTK_UNSIGNED_CHAR = 1
+VTK_TIMES = 2
+VTK_FONT_FILE = 1 # TODO: What is this value
+VTK_UNSIGNED_CHAR = 3
 class buffer_shared:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'buffer_shared' is not implemented yet")
@@ -51,9 +51,15 @@ class vtkIdList:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkIdList' is not implemented yet")
 
+# TODO
 class vtkIdTypeArray:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkIdTypeArray' is not implemented yet")
+    def __init__(self):
+        # Example attribute
+        self.data_type_size = 4  # Mock value for data type size
+
+    def GetDataTypeSize(self):
+        # Return a mocked data type size
+        return self.data_type_size
 
 class vtkLogger:
     def __init__(self, *args, **kwargs):
@@ -69,7 +75,13 @@ class vtkMath:
 
 class vtkOutputWindow:
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkOutputWindow' is not implemented yet")
+        # This doesn't appear to be used in the pyvista codebase
+        # It might be a good place to log to console if it does get used though
+        # raise NotImplementedError(f"'vtkStringOutputWindow' is not implemented yet")
+        self.instance = None
+    def SetInstance(self, instance):
+        # TODO: 'instance' might be from variable 'error_output' so perhaps we console.log it? Or print it?
+        self.instance = instance
 
 class vtkPoints:
     def __init__(self, *args, **kwargs):
@@ -84,8 +96,16 @@ class vtkStringArray:
         raise NotImplementedError(f"'vtkStringArray' is not implemented yet")
 
 class vtkStringOutputWindow:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkStringOutputWindow' is not implemented yet")
+        # This doesn't appear to be used in the pyvista codebase
+        # It might be a good place to log to console if it does get used though
+        # raise NotImplementedError(f"'vtkStringOutputWindow' is not implemented yet")
+    def __init__(self):
+        self.observers = []
+    
+    def AddObserver(self, event, callback):
+        # Mock behavior of AddObserver
+        print(f"AddObserver called with event: {event} and callback: {callback}")
+        self.observers.append((event, callback))
 
 class vtkTypeInt32Array:
     def __init__(self, *args, **kwargs):
@@ -104,10 +124,28 @@ class vtkUnsignedCharArray:
         raise NotImplementedError(f"'vtkUnsignedCharArray' is not implemented yet")
 
 class vtkVersion:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkVersion' is not implemented yet")
+    major = 9
+    @staticmethod
+    def GetVTKMajorVersion():
+        return 9
 
+    @staticmethod
+    def GetVTKMinorVersion():
+        return 4
+
+    @staticmethod
+    def GetVTKBuildVersion():
+        return 1
+
+# TODO
 class vtkWeakReference:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkWeakReference' is not implemented yet")
+    def __init__(self):
+        self._reference = None
 
+    def Set(self, obj):
+        # Store the reference to the actual object
+        self._reference = obj
+    
+    def Get(self):
+        # Return the actual referenced object
+        return self._reference

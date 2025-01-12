@@ -61,7 +61,9 @@ def create_mock_modules(parsed_imports):
     sys.modules["vtkmodules"] = vtkmodules
 
 # URL of the source file
-url = "https://raw.githubusercontent.com/pyvista/pyvista/refs/heads/main/pyvista/core/_vtk_core.py"
+# url = "https://raw.githubusercontent.com/pyvista/pyvista/refs/heads/main/pyvista/core/_vtk_core.py"
+# url = "https://raw.githubusercontent.com/pyvista/pyvista/refs/tags/v0.44.2/pyvista/plotting/_vtk.py"
+url = "https://raw.githubusercontent.com/pyvista/pyvista/refs/tags/v0.44.2/pyvista/plotting/_vtk_gl.py"
 
 # Fetch the content from the URL
 response = requests.get(url)
@@ -81,9 +83,9 @@ imports = sorted(imports)
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
-with open('vtkimports.txt', 'w') as f:
+with open('vtkimports-gl.txt', 'w') as f:
     for i in imports:
         f.write(i + "\n")
 
-print(f"{len(imports)} imports written to vtkimports.txt")
+print(f"{len(imports)} imports written to vtkimports-gl.txt")
     

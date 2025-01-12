@@ -60,13 +60,13 @@ def generate_mock_modules(imports, base_dir):
         print(f"Generated {file_path}")
 
 
-with open('vtkimports.txt', 'r') as file:
+with open('vtkimports-gl.txt', 'r') as file:
     lines = file.readlines()
 
 lines = [x for x in lines if x.startswith('vtk')]
 
 # Base directory where the modules will be created
-base_dir = "vtkmodules"
+base_dir = "vtkmodules-gl"
 
 # Call the function to generate the actual Python modules and classes
 generate_mock_modules(lines, base_dir)

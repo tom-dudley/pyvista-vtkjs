@@ -1,4 +1,8 @@
+# TODO
 class vtkAlgorithm:
+    # TODO
+    SINGLE_PRECISION = 0
+    DOUBLE_PRECISION = 1
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkAlgorithm' is not implemented yet")
 
