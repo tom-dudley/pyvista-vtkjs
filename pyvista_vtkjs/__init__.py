@@ -17,6 +17,10 @@ sys.path = sys.path[:-1]
 
 from pyvista import *
 
+CylinderSource._new_attr_exceptions.extend(['radius', 'height', 'resolution', 'capping'])
+print(CylinderSource._new_attr_exceptions)
+
+
 # from .cylinder_source import CylinderSource
 from .plotter import Plotter
 

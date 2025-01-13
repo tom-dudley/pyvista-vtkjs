@@ -18,9 +18,53 @@ class vtkCubeSource:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkCubeSource' is not implemented yet")
 
-class vtkCylinderSource:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkCylinderSource' is not implemented yet")
+# TODO: This should persist to some background state in vtk.js rather than actually implementing functionality here. It should just proxy
+class vtkCylinderSource():
+    # _new_attr_exceptions = ['radius']
+    # def __new__(cls, *args, **kwargs):
+    #     print("Called new")
+    #     instance = super().__new__(cls)
+    #     print("Got instance")
+    # #
+    # #     print(instance.__dict__)
+    # #
+    # #     instance.radius = 0.5 
+    # #
+    #     print("Returning instance")
+    #     return instance
+
+    def __init__(self):
+        print("Called init")
+        self.radius = 10
+        print("Set radius")
+
+    #     self,
+    #     center = (0.0, 0.0, 0.0),
+    #     direction = (1.0, 0.0, 0.0),
+    #     radius = 0.5,
+    #     height = 1.0,
+    #     capping = True,
+    #     resolution = 100,
+    # ) -> None:
+    #     pass
+    def SetHeight(self, x):
+        self.height = x
+    def SetRadius(self, x):
+        self.radius = x
+    def SetResolution(self, x):
+        self.resolution = x
+    def Update(self):
+        pass
+    def GetOutput(self):
+        # c.getState() looks super handy and what we need
+        # or c.toJSON()
+        # d = c.getOutputData()
+        # d.getClassName() gives 'vtkPolyData'
+        # c = vtk.Filters.Sources.vtkCylinderSource.newInstance({ height: 2, radius: 1, resolution: 80 })
+
+        # TODO: This should be a: vtkPolyData 
+        # somehow..
+        pass
 
 class vtkDiskSource:
     def __init__(self, *args, **kwargs):
