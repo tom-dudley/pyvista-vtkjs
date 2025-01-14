@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@kitware/vtk.js": "^32.9.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^6.0.1"
+  }
+}
