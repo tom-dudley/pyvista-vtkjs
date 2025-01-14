@@ -1,3 +1,7 @@
+import js
+from pyodide.ffi import create_proxy
+from vtkmodules.vtkCommonCore import vtkDataArray, vtkPoints
+
 VTK_EMPTY_CELL = 0
 VTK_VERTEX = 1
 VTK_POLY_VERTEX = 2
@@ -87,6 +91,14 @@ class vtkBiQuadraticTriangle:
 class vtkCell:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkCell' is not implemented yet")
+# TODO
+class vtkCellData:
+    def __init__(self):
+        self.active_vectors_name = None 
+        self.active_normals_name = None 
+    def SetActiveScalars(self, active_scalars):
+        # TODO
+        pass
 
 class vtkCellArray:
     def __init__(self, *args, **kwargs):
@@ -120,13 +132,37 @@ class vtkDataObject:
     FIELD_ASSOCIATION_POINTS = 0
     FIELD_ASSOCIATION_CELLS = 1
     FIELD_ASSOCIATION_NONE = 2
-    FIELD_ASSOCIATION_ROWS = 3
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkDataObject' is not implemented yet")
+    FIELD_ASSOCIATION_POINTS_THEN_CELLS = 3
+    FIELD_ASSOCIATION_VERTICES = 4
+    FIELD_ASSOCIATION_EDGES = 5
+    FIELD_ASSOCIATION_ROWS = 6
+    NUMBER_OF_ASSOCIATIONS = 7
+
+    POINT = 0
+    CELL = 1
+    FIELD = 2
+    POINT_THEN_CELL = 3
+    VERTEX = 4
+    EDGE = 5
+    ROW = 6
+    NUMBER_OF_ATTRIBUTE_TYPES = 7
+
+    FIELD_OPERATION_PRESERVED = 0
+    FIELD_OPERATION_REINTERPOLATED = 1
+    FIELD_OPERATION_MODIFIED = 2
+    FIELD_OPERATION_REMOVED = 3
+    def __init__(self):
+        pass
+    # TODO: Should ensure all vtk classes have 'GetClassName' set
+    def GetClassName(self):
+        return "vtkDataObject"
 
 class vtkDataSet:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkDataSet' is not implemented yet")
+    def GetPointData():
+        # TODO
+        pass
 
 class vtkDataSetAttributes:
     def __init__(self, *args, **kwargs):
@@ -140,9 +176,13 @@ class vtkExplicitStructuredGrid:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkExplicitStructuredGrid' is not implemented yet")
 
+# TODO
 class vtkFieldData:
     def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkFieldData' is not implemented yet")
+        pass
+    def GetNumberOfArrays(self):
+        # TODO
+        return 0
 
 class vtkGenericCell:
     def __init__(self, *args, **kwargs):
@@ -212,6 +252,23 @@ class vtkPlanes:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkPlanes' is not implemented yet")
 
+# TODO
+class vtkPointData:
+    def __init__(self):
+        self.active_vectors_name = None 
+        self.active_normals_name = None 
+        self.active_scalars_name = None 
+    def GetArray(self, i):
+        # TODO
+        # Inherited from vtkFieldData, returns vtkDataArray, I think
+        return vtkDataArray()
+    def SetActiveScalars(self, active_scalars):
+        # TODO
+        pass
+    def GetNumberOfArrays(self):
+        # TODO
+        return 0
+
 class vtkPointLocator:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkPointLocator' is not implemented yet")
@@ -220,9 +277,53 @@ class vtkPointSet:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkPointSet' is not implemented yet")
 
+# TODO
 class vtkPolyData:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkPolyData' is not implemented yet")
+    def __init__(self):
+        # TODO: Handle cleanup/destroy
+        # Also see other params
+        self.obj = create_proxy(js.vtk.Common.DataModel.vtkPolyData.newInstance())
+    def GetClassName(self):
+        return "vtkPolyData"
+    def GetPoints(self):
+        # TODO: Get the points...
+        points = create_proxy(self.obj.getPoints())
+        print(f"Got points: {points}")
+        #TODO
+        return vtkPoints()
+        pass
+    def SetPoints(self, points):
+        # TODO: Set the points
+        print(f"Setting points: {points}")
+        # TODO: Check the format going in is correct
+        self.obj.setPoints(create_proxy(points))
+    def ShallowCopy(self, target):
+        print(f"Copying to target: {target}")
+        # TODO: Copy...somehow. What type do we want to return?
+    def GetPointData(self):
+        # TODO - This should be inherited from vtkDataSet I think
+        return vtkPointData()
+    def GetCellData(self):
+        # TODO - This should be inherited from vtkDataSet I think
+        return vtkPointData()
+    def GetFieldData(self):
+        # TODO
+        return vtkFieldData()
+    def GetNumberOfCells(self):
+        # TODO
+        return 0
+    def GetNumberOfPoints(self):
+        # TODO
+        return 0
+    def GetNumberOfStrips(self):
+        # TODO
+        return 0
+    def GetBounds(self):
+        # TODO
+        xmin = ymin = zmin = -1
+        xmax = ymax = zmax = 1
+        return (xmin,xmax, ymin,ymax, zmin,zmax)
+
 
 class vtkPolyLine:
     def __init__(self, *args, **kwargs):

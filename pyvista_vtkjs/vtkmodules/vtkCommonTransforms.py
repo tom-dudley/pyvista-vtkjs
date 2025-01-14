@@ -1,4 +1,8 @@
 class vtkTransform:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkTransform' is not implemented yet")
+    def __init__(self):
+        # TODO
+        pass
+    def SetMatrix(self, t):
+        # TODO
+        pass
 

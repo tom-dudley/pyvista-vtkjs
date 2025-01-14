@@ -1,3 +1,6 @@
+import js
+from vtkmodules.vtkCommonDataModel import vtkPolyData
+
 class vtkArcSource:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkArcSource' is not implemented yet")
@@ -18,43 +21,21 @@ class vtkCubeSource:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkCubeSource' is not implemented yet")
 
-# TODO: This should persist to some background state in vtk.js rather than actually implementing functionality here. It should just proxy
 class vtkCylinderSource():
-    # _new_attr_exceptions = ['radius']
-    # def __new__(cls, *args, **kwargs):
-    #     print("Called new")
-    #     instance = super().__new__(cls)
-    #     print("Got instance")
-    # #
-    # #     print(instance.__dict__)
-    # #
-    # #     instance.radius = 0.5 
-    # #
-    #     print("Returning instance")
-    #     return instance
-
     def __init__(self):
-        print("Called init")
-        self.radius = 10
-        print("Set radius")
-
-    #     self,
-    #     center = (0.0, 0.0, 0.0),
-    #     direction = (1.0, 0.0, 0.0),
-    #     radius = 0.5,
-    #     height = 1.0,
-    #     capping = True,
-    #     resolution = 100,
-    # ) -> None:
-    #     pass
+        # Does this need to be torn down / destroyed? Check docs
+        self.obj = js.vtk.Filters.Sources.CylinderSource.newInstance()
+        # We could also use/store:
+        # csi.toJSON().to_py()
+        # We could 'walk' this structure looking for vtkClass
     def SetHeight(self, x):
-        self.height = x
+        self.obj.setHeight(x)
     def SetRadius(self, x):
-        self.radius = x
+        self.obj.setRadius(x)
     def SetResolution(self, x):
-        self.resolution = x
+        self.obj.setResolution(x)
     def Update(self):
-        pass
+        self.obj.update()
     def GetOutput(self):
         # c.getState() looks super handy and what we need
         # or c.toJSON()
@@ -64,7 +45,15 @@ class vtkCylinderSource():
 
         # TODO: This should be a: vtkPolyData 
         # somehow..
-        pass
+
+        # polyData = js.vtk.vtk.Common.DataModel.vtkPolyData
+        # d = polyData.newInstance()
+        # print(d.getBounds())
+
+        # output will be 'vtkPolyData' here
+        output = self.obj.getOutputData() 
+        polydata = vtkPolyData()
+        return polydata
 
 class vtkDiskSource:
     def __init__(self, *args, **kwargs):

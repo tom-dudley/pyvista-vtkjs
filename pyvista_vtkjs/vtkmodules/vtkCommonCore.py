@@ -1,11 +1,15 @@
+import js
+
 VTK_ARIAL = 0
 VTK_COURIER = 1
 VTK_TIMES = 2
 VTK_FONT_FILE = 1 # TODO: What is this value
 VTK_UNSIGNED_CHAR = 3
+
+# TODO: This looks fun..
 class buffer_shared:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'buffer_shared' is not implemented yet")
+    def __init__(self):
+        pass
 
 class mutable:
     def __init__(self, *args, **kwargs):
@@ -31,9 +35,18 @@ class vtkCommand:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkCommand' is not implemented yet")
 
+# TODO
 class vtkDataArray:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkDataArray' is not implemented yet")
+    def __init__(self):
+        pass
+    def CreateDataArray(vtk_arr_type):
+        return vtkDataArray()
+    def SetNumberOfComponents(self, n):
+        pass
+    def SetNumberOfTuples(self, n):
+        pass
+    def SetVoidArray(self, a, b, c):
+        pass
 
 class vtkDoubleArray:
     def __init__(self, *args, **kwargs):
@@ -83,9 +96,16 @@ class vtkOutputWindow:
         # TODO: 'instance' might be from variable 'error_output' so perhaps we console.log it? Or print it?
         self.instance = instance
 
+# TODO
 class vtkPoints:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkPoints' is not implemented yet")
+    def __init__(self):
+        self.obj = js.vtk.Common.Core.vtkPoints.newInstance()
+    def SetData(self, data):
+        pass
+    def GetData(self):
+        # TODO
+        # This is a nested list of ints, eg rows of a matrix I imagine
+        return []
 
 class vtkSignedCharArray:
     def __init__(self, *args, **kwargs):

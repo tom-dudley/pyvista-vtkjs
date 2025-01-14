@@ -1,3 +1,5 @@
+from vtkmodules.vtkCommonDataModel import vtkDataObject, vtkPolyData
+
 class vtkAxes:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkAxes' is not implemented yet")
@@ -74,9 +76,24 @@ class vtkTessellatorFilter:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkTessellatorFilter' is not implemented yet")
 
+# TODO
 class vtkTransformFilter:
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError(f"'vtkTransformFilter' is not implemented yet")
+    def __init__(self):
+        pass
+    def SetInputDataObject(self, i):
+        pass
+    def SetTransform(self, t):
+        pass
+    def SetTransformAllInputVectors(self, transform_all_input_vectors):
+        pass
+    def Update(self):
+        pass
+    # TODO
+    # These two are inherited from vtkAlgorithm, returning something which inherits from vtkDataObject
+    def GetInputDataObject(self, iport, iconnection):
+        return vtkPolyData()
+    def GetOutputDataObject(self, oport):
+        return vtkPolyData()
 
 class vtkWarpScalar:
     def __init__(self, *args, **kwargs):

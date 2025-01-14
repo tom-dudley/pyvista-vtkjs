@@ -3,6 +3,7 @@
 # Include doc
 # include LICENSE
 include pyvista_vtkjs/vtk.js
+include pyvista_vtkjs/vtk-core-bundle.js
 recursive-exclude pyvista_vtkjs/pyvista/doc *.rst
 recursive-exclude pyvista_vtkjs/pyvista/doc *.py
 recursive-exclude pyvista_vtkjs/pyvista/tests *.*
