@@ -1,5 +1,6 @@
 import vtkPoints from '@kitware/vtk.js/Common/Core/Points';
 import vtkPolyData from '@kitware/vtk.js/Common/DataModel/PolyData';
+import vtkTransform from '@kitware/vtk.js/Common/Transform/Transform';
 import CylinderSource from '@kitware/vtk.js/Filters/Sources/CylinderSource';
 
 // Ensure the vtk object is properly initialized and namespace is preserved
@@ -9,6 +10,9 @@ export const Common = {
     },
     DataModel: {
         vtkPolyData: vtkPolyData
+    },
+    Transform: {
+        vtkTransform: vtkTransform,
     }
 }
 

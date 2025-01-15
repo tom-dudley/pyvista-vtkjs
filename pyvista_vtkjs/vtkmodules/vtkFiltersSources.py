@@ -1,5 +1,6 @@
 import js
 from vtkmodules.vtkCommonDataModel import vtkPolyData
+from pyvista_vtkjs.logger import logger
 
 class vtkArcSource:
     def __init__(self, *args, **kwargs):
@@ -21,38 +22,63 @@ class vtkCubeSource:
     def __init__(self, *args, **kwargs):
         raise NotImplementedError(f"'vtkCubeSource' is not implemented yet")
 
+# TODO: Ideally we'd define/generate this off the back of the vtkFiltersSources.pyi file which defines these definitions
 class vtkCylinderSource():
     def __init__(self):
+        logger.debug("vtkCylinderSource: __init__")
         # Does this need to be torn down / destroyed? Check docs
         self.obj = js.vtk.Filters.Sources.CylinderSource.newInstance()
         # We could also use/store:
         # csi.toJSON().to_py()
         # We could 'walk' this structure looking for vtkClass
+    def GetHeight(self):
+        logger.debug(f"vtkCylinderSource: GetHeight")
+        return self.obj.getHeight()
     def SetHeight(self, x):
+        logger.debug(f"vtkCylinderSource: SetHeight: {x}")
         self.obj.setHeight(x)
+    def GetRadius(self):
+        logger.debug(f"vtkCylinderSource: GetRadius")
+        return self.obj.getRadius()
     def SetRadius(self, x):
+        logger.debug(f"vtkCylinderSource: SetRadius: {x}")
         self.obj.setRadius(x)
+    def GetResolution(self):
+        logger.debug(f"vtkCylinderSource: GetResolution")
+        return self.obj.getResolution()
     def SetResolution(self, x):
+        logger.debug(f"vtkCylinderSource: SetResolution: {x}")
         self.obj.setResolution(x)
+    def GetCapping(self):
+        logger.debug(f"vtkCylinderSource: GetCapping")
+        return self.obj.getCapping()
+    def SetCapping(self, x):
+        logger.debug(f"vtkCylinderSource: SetCapping: {x}")
+        self.obj.setCapping(x)
+    def GetCapsuleCap(self):
+        logger.debug(f"vtkCylinderSource: GetCapsuleCap")
+        return self.obj.getCapsuleCap()
+    def SetCapsuleCap(self, x):
+        logger.debug(f"vtkCylinderSource: SetCapsuleCap: {x}")
+        self.obj.setCapsuleCap(x)
     def Update(self):
+        logger.debug(f"vtkCylinderSource: Update")
         self.obj.update()
     def GetOutput(self):
+        logger.debug(f"vtkCylinderSource: GetOutput")
         # c.getState() looks super handy and what we need
         # or c.toJSON()
         # d = c.getOutputData()
         # d.getClassName() gives 'vtkPolyData'
         # c = vtk.Filters.Sources.vtkCylinderSource.newInstance({ height: 2, radius: 1, resolution: 80 })
 
-        # TODO: This should be a: vtkPolyData 
-        # somehow..
-
-        # polyData = js.vtk.vtk.Common.DataModel.vtkPolyData
         # d = polyData.newInstance()
         # print(d.getBounds())
 
-        # output will be 'vtkPolyData' here
+        # returns a JS vtkPolyData
         output = self.obj.getOutputData() 
-        polydata = vtkPolyData()
+        # creates a Python vtkPolyData
+        polydata = vtkPolyData(output)
         return polydata
 
 class vtkDiskSource:

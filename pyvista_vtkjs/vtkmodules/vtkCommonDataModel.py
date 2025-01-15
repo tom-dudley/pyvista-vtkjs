@@ -1,6 +1,7 @@
 import js
 from pyodide.ffi import create_proxy
 from vtkmodules.vtkCommonCore import vtkDataArray, vtkPoints
+from pyvista_vtkjs.logger import logger
 
 VTK_EMPTY_CELL = 0
 VTK_VERTEX = 1
@@ -254,20 +255,27 @@ class vtkPlanes:
 
 # TODO
 class vtkPointData:
-    def __init__(self):
+    def __init__(self, jsObj=None):
+        logger.debug("vtkPointData: __init__")
+        if jsObj:
+            self.obj = jsObj
+        else:
+            self.obj = js.vtk.Common.DataModel.vtkPointData.newInstance()
         self.active_vectors_name = None 
         self.active_normals_name = None 
         self.active_scalars_name = None 
     def GetArray(self, i):
-        # TODO
+        logger.debug("vtkPointData: GetArray")
         # Inherited from vtkFieldData, returns vtkDataArray, I think
-        return vtkDataArray()
+        # return vtkDataArray()
+        # TODO: Return that type
+        return self.obj.getArray()
     def SetActiveScalars(self, active_scalars):
-        # TODO
-        pass
+        logger.debug("vtkPointData: SetActiveScalars")
+        self.obj.setActiveScalars(active_scalars)
     def GetNumberOfArrays(self):
-        # TODO
-        return 0
+        logger.debug("vtkPointData: GetNumberOfArrays")
+        return self.obj.getNumberOfArrays()
 
 class vtkPointLocator:
     def __init__(self, *args, **kwargs):
@@ -279,50 +287,93 @@ class vtkPointSet:
 
 # TODO
 class vtkPolyData:
-    def __init__(self):
-        # TODO: Handle cleanup/destroy
-        # Also see other params
-        self.obj = create_proxy(js.vtk.Common.DataModel.vtkPolyData.newInstance())
-    def GetClassName(self):
-        return "vtkPolyData"
+    def __init__(self, jsObj=None):
+        logger.debug("vtkPolyData: __init__")
+        if jsObj:
+            logger.debug(f"Wrapping existing JS vtkPolyData {str(jsObj.js_id)}")
+            self.obj = jsObj
+        else:
+            logger.debug("Creating new JS vtkPolydata")
+            self.obj = js.vtk.Common.DataModel.vtkPolyData.newInstance()
+        logger.debug(f"Number of cells [{str(self.obj.js_id)}]: {str(self.obj.getNumberOfCells())}")
+        print(f"self.obj: {self.obj.js_id}")
     def GetPoints(self):
-        # TODO: Get the points...
-        points = create_proxy(self.obj.getPoints())
+        logger.debug("vtkPolyData: GetPoints")
+        logger.debug(f"Number of cells [{str(self.obj.js_id)}]: {str(self.obj.getNumberOfCells())}")
+        print(f"self.obj: {self.obj.js_id}")
+        points = self.obj.getPoints()
         print(f"Got points: {points}")
-        #TODO
-        return vtkPoints()
-        pass
+        # we should return a 'vtkPoints' 
+        return points
     def SetPoints(self, points):
+        logger.debug(f"vtkPolyData: SetPoints: {points}")
+        logger.debug(f"Number of cells [{str(self.obj.js_id)}]: {str(self.obj.getNumberOfCells())}")
+        # we should be passed a 'vtkPoints'
+        print(f"self.obj: {self.obj.js_id}")
         # TODO: Set the points
         print(f"Setting points: {points}")
         # TODO: Check the format going in is correct
-        self.obj.setPoints(create_proxy(points))
-    def ShallowCopy(self, target):
-        print(f"Copying to target: {target}")
-        # TODO: Copy...somehow. What type do we want to return?
+        jsPoints = create_proxy(points)
+        self.obj.setPoints(jsPoints)
+    def GetClassName(self):
+        logger.debug(f"vtkPolyData: GetClassName")
+        logger.debug(f"Number of cells [{str(self.obj.js_id)}]: {str(self.obj.getNumberOfCells())}")
+        return "vtkPolyData"
+    def ShallowCopy(self, src):
+        logger.debug(f"vtkPolyData: ShallowCopy")
+        logger.debug(f"Number of cells [{str(self.obj.js_id)}]: {str(self.obj.getNumberOfCells())}")
+        print(f"Copying from: {str(src.obj.js_id)} to {str(self.obj.js_id)}")
+        print(f"src class: {src.GetClassName()}")
+        # TODO: Maybe can just pass src.obj anyway?
+        match src.GetClassName():
+            case "vtkPolyData":
+                srcJs = src.obj
+            case _:
+                raise NotImplementedError(f"Conversion from {src.GetClassName()} is not implemented yet.")
+        # src is a vtkDataObject
+        self.obj.shallowCopy(srcJs)
     def GetPointData(self):
+        logger.debug(f"vtkPolyData: GetPointData")
+        logger.debug(f"Number of cells [{str(self.obj.js_id)}]: {str(self.obj.getNumberOfCells())}")
         # TODO - This should be inherited from vtkDataSet I think
-        return vtkPointData()
+        pointData = self.obj.getPointData()
+        logger.debug(f"Points")
+        logger.debug(pointData.toJSON().to_py())
+        return vtkPointData(pointData)
     def GetCellData(self):
+        logger.debug(f"vtkPolyData: GetCellData")
+        logger.debug(f"Number of cells [{str(self.obj.js_id)}]: {str(self.obj.getNumberOfCells())}")
         # TODO - This should be inherited from vtkDataSet I think
-        return vtkPointData()
+        cellData = self.obj.getCellData()
+        return vtkPointData(cellData)
     def GetFieldData(self):
-        # TODO
-        return vtkFieldData()
+        logger.debug(f"vtkPolyData: GetFieldData")
+        logger.debug(f"Number of cells [{str(self.obj.js_id)}]: {str(self.obj.getNumberOfCells())}")
+        fieldData = self.obj.getFieldData()
+        return vtkFieldData(fieldData)
     def GetNumberOfCells(self):
-        # TODO
-        return 0
+        logger.debug(f"vtkPolyData: GetNumberOfCells")
+        logger.debug(f"Number of cells [{str(self.obj.js_id)}]: {str(self.obj.getNumberOfCells())}")
+        return self.obj.getNumberOfCells()
     def GetNumberOfPoints(self):
-        # TODO
-        return 0
+        logger.debug(f"vtkPolyData: GetNumberOfPoints")
+        logger.debug(f"Number of cells [{str(self.obj.js_id)}]: {str(self.obj.getNumberOfCells())}")
+        logger.debug(f"Class name: {self.obj.getClassName()}")
+        # logger.debug(f"dir: {dir(self.obj)}")
+        logger.debug(f"{type(self.obj.getNumberOfPoints)}")
+        logger.debug(f"{self.obj.getNumberOfPoints}")
+        return self.obj.getNumberOfPoints()
     def GetNumberOfStrips(self):
-        # TODO
-        return 0
+        logger.debug(f"vtkPolyData: GetNumberOfStrips")
+        logger.debug(f"Number of cells [{str(self.obj.js_id)}]: {str(self.obj.getNumberOfCells())}")
+        return self.obj.getNumberOfStrips()
     def GetBounds(self):
-        # TODO
-        xmin = ymin = zmin = -1
-        xmax = ymax = zmax = 1
-        return (xmin,xmax, ymin,ymax, zmin,zmax)
+        logger.debug(f"vtkPolyData: GetBounds")
+        logger.debug(f"Number of cells [{str(self.obj.js_id)}]: {str(self.obj.getNumberOfCells())}")
+        return self.obj.getBounds() 
+    def __del__(self):
+        # TODO Keep track of all `create_proxy` objects and destroy them
+        pass
 
 
 class vtkPolyLine:

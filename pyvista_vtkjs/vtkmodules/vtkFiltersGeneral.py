@@ -1,4 +1,6 @@
+import js
 from vtkmodules.vtkCommonDataModel import vtkDataObject, vtkPolyData
+from pyvista_vtkjs.logger import logger
 
 class vtkAxes:
     def __init__(self, *args, **kwargs):
@@ -79,21 +81,30 @@ class vtkTessellatorFilter:
 # TODO
 class vtkTransformFilter:
     def __init__(self):
+        logger.debug(f"vtkTransformFilter: __init__")
+        self.obj = js.vtk.Common.Transform.vtkTransform.newInstance()
         pass
     def SetInputDataObject(self, i):
-        pass
+        # This is type: pyvista.core.pointset.PolyData for CylinderSource
+        logger.debug(f"vtkTransformFilter: SetInputDataObject: {type(i)}")
+        self.input = i
     def SetTransform(self, t):
+        logger.debug(f"vtkTransformFilter: SetTransform: {t}")
         pass
     def SetTransformAllInputVectors(self, transform_all_input_vectors):
+        logger.debug(f"vtkTransformFilter: SetTransformAllInputVectors: {transform_all_input_vectors}")
         pass
     def Update(self):
+        logger.debug(f"vtkTransformFilter: Update")
         pass
     # TODO
     # These two are inherited from vtkAlgorithm, returning something which inherits from vtkDataObject
     def GetInputDataObject(self, iport, iconnection):
-        return vtkPolyData()
+        logger.debug(f"vtkTransformFilter: GetInputDataObject: {iport}, {iconnection}")
+        return self.input
     def GetOutputDataObject(self, oport):
-        return vtkPolyData()
+        logger.debug(f"vtkTransformFilter: GetOutputDataObject: {oport}")
+        return self.input 
 
 class vtkWarpScalar:
     def __init__(self, *args, **kwargs):

@@ -1,6 +1,7 @@
 import json
 import webcolors
 from IPython.display import display, HTML
+from vtkmodules.vtkCommonDataModel import vtkPolyData
 
 # TODO: Add a little spinner gif for while the div is rendering
 # TODO: Figure out how to disable vtk.js keyboard bindings (s,w,v,r)
@@ -59,10 +60,10 @@ class Plotter():
         self.width = width
         self.meshes = []
         self.next_mesh_id = 1
+    # TODO: Disable keyboard bindings for s,w,r etc.
     def add_mesh(self, mesh, color="black", show_edges=False):
-        # Typing the word 'show' here seems to flip the actual realtime display. I don't understand that..
-        # It does suggest we could have some realtime updating though (i.e. render continously on cell change
-        # Or 'render if it compiles' on cell change
+        if isinstance(mesh, vtkPolyData):
+            print(f"Adding vtkPolyData mesh")
         self.meshes.append([self.next_mesh_id, mesh, color, show_edges])
         self.next_mesh_id = self.next_mesh_id + 1
     def show(self, debug=False):
